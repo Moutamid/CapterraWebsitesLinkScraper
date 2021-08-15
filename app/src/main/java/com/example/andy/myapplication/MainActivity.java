@@ -2,6 +2,8 @@ package com.example.andy.myapplication;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private Context context = MainActivity.this;
     private ProgressDialog progressDialog;
     TextView textView;
-
+    private boolean breakk = false;
     ArrayList<String> profileUrlsList = new ArrayList<String>();
     ArrayList<String> websiteUrlsList = new ArrayList<String>();
 
@@ -45,14 +47,28 @@ public class MainActivity extends AppCompatActivity {
 
 
         progressDialog = new ProgressDialog(MainActivity.this);
-        progressDialog.setCancelable(false);
+        progressDialog.setCancelable(true);
+        progressDialog.setCanceledOnTouchOutside(true);
         progressDialog.setMessage("Loading...");
+        progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                breakk = true;
+            }
+        });
 
         findViewById(R.id.startBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DownloadTask task = new DownloadTask();
                 task.execute("https://www.capterra.com/p/170703/Sightcall/");
+            }
+        });
+
+        findViewById(R.id.browserBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, BrowserActivity.class));
             }
         });
 
@@ -336,6 +352,8 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+//        int position;
+
         @Override
         protected String doInBackground(String... urls) {
             Log.d(TAG, "doInBackground: ");
@@ -371,7 +389,11 @@ public class MainActivity extends AppCompatActivity {
 
             String totalSize = String.valueOf(profileUrlsList.size());
 
+            int i = 0;
+
             for (String profileUrl : profileUrlsList) {
+
+//                if (profileUrlsList.indexOf(profileUrl) + 1)
 
                 String htmlData = getHtmlString(profileUrl);
 
@@ -379,9 +401,25 @@ public class MainActivity extends AppCompatActivity {
 
                 websiteUrlsList.add(webUrl);
 
-                String position = String.valueOf(profileUrlsList.indexOf(profileUrl) + 1);
+                int position = profileUrlsList.indexOf(profileUrl) + 1;
 
-                updateProgressBar(position, totalSize);
+                updateProgressBar(String.valueOf(position), totalSize);
+
+                try {
+                    Thread.sleep(30000);//60000
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+//                i++;
+//                if (i == 4) {
+//                    break;
+//                }
+
+                if (breakk) {
+                    break;
+                }
+
             }
 
             return "null";
