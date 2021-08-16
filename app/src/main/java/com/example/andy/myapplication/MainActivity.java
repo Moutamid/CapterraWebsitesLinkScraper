@@ -47,15 +47,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         progressDialog = new ProgressDialog(MainActivity.this);
-        progressDialog.setCancelable(true);
-        progressDialog.setCanceledOnTouchOutside(true);
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.setMessage("Loading...");
-        progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialogInterface) {
-                breakk = true;
-            }
-        });
 
         findViewById(R.id.startBtn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -416,9 +410,9 @@ public class MainActivity extends AppCompatActivity {
 //                    break;
 //                }
 
-                if (breakk) {
-                    break;
-                }
+//                if (breakk) {
+//                    break;
+//                }
 
             }
 
