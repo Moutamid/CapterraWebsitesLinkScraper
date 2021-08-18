@@ -2,8 +2,8 @@ package com.example.andy.myapplication;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,7 +11,6 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,7 +25,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -55,9 +53,18 @@ public class MainActivity extends AppCompatActivity {
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.setMessage("Loading...");
 
-        findViewById(R.id.startBtn).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.resumeBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                DownloadTask task = new DownloadTask();
+                task.execute("https://www.capterra.com/p/170703/Sightcall/");
+            }
+        });
+
+        findViewById(R.id.start1Btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                storeInteger(0);
                 DownloadTask task = new DownloadTask();
                 task.execute("https://www.capterra.com/p/170703/Sightcall/");
             }
@@ -412,7 +419,18 @@ public class MainActivity extends AppCompatActivity {
             else
                 delayInt = Integer.parseInt(ppp);
 
+            int storedInt = getStoredInteger();
+
             for (String profileUrl : profileUrlsList) {
+
+                int position = profileUrlsList.indexOf(profileUrl) + 1;
+
+                // THIS CODE IS USED TO RESUME THE LOOP WHERE IT WAS BEFORE CRASH
+                if (storedInt != 0){
+                    if (position <= storedInt){
+                        continue;
+                    }
+                }
 
 //                if (profileUrlsList.indexOf(profileUrl) + 1)
 
@@ -426,7 +444,6 @@ public class MainActivity extends AppCompatActivity {
                     websiteUrlsList.add(webUrl);
                     saveTextFile(false);
                 }
-                int position = profileUrlsList.indexOf(profileUrl) + 1;
 
                 updateProgressBar(String.valueOf(position), totalSize);
 
@@ -442,6 +459,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     }
                 }
+
+                storeInteger(position);
 
 //                if (breakk) {
 //                    break;
@@ -624,4 +643,19 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
+    private static final String PACKAGE_NAME = "dev.moutamid.Capterra";
+
+    private SharedPreferences sharedPreferences;
+
+    public void storeInteger(int value) {
+        sharedPreferences = context.getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
+        sharedPreferences.edit().putInt("LOOP_VALUE", value).apply();
+    }
+
+    public int getStoredInteger() {
+        sharedPreferences = context.getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getInt("LOOP_VALUE", 0);
+    }
+
 }
