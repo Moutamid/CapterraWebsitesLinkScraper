@@ -6,6 +6,18 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RUN LOOP THIS TIMES. 0 MEAN INFINITE" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:id="@+id/loop_execute_count_editText"
+        android:text="0" />
+
     <Button
         android:id="@+id/browserBtn"
         android:layout_width="match_parent"

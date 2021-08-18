@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean breakk = false;
     ArrayList<String> profileUrlsList = new ArrayList<String>();
     ArrayList<String> websiteUrlsList = new ArrayList<String>();
+    EditText loop_execute_count_editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         textView = findViewById(R.id.outputTextview);
 
+        loop_execute_count_editText = findViewById(R.id.loop_execute_count_editText);
 
         progressDialog = new ProgressDialog(MainActivity.this);
         progressDialog.setCancelable(false);
@@ -384,16 +386,24 @@ public class MainActivity extends AppCompatActivity {
             String totalSize = String.valueOf(profileUrlsList.size());
 
             int i = 0;
+            String lll = loop_execute_count_editText.getText().toString();
+            int loopCount;
+            if (lll.isEmpty())
+                loopCount = 0;
+            else
+                loopCount = Integer.parseInt(lll);
 
             for (String profileUrl : profileUrlsList) {
 
 //                if (profileUrlsList.indexOf(profileUrl) + 1)
 
+/*
                 String htmlData = getHtmlString(profileUrl);
 
                 String webUrl = getWebsiteUrl(htmlData);
 
                 websiteUrlsList.add(webUrl);
+*/
 
                 int position = profileUrlsList.indexOf(profileUrl) + 1;
 
@@ -405,10 +415,12 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-//                i++;
-//                if (i == 4) {
-//                    break;
-//                }
+                if (loopCount != 0) {
+                    i++;
+                    if (i == loopCount) {
+                        break;
+                    }
+                }
 
 //                if (breakk) {
 //                    break;
@@ -516,4 +528,26 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    boolean ggg = false;
+//    int counter = 10;
+//    boolean as = true;
+
+    @Override
+    public void onBackPressed() {
+        if (ggg) {
+            super.onBackPressed();
+        } else {
+//            if (as) {
+//                Toast.makeText(MainActivity.this,
+//                        "Press back " + counter + " times to stop!", Toast.LENGTH_SHORT).show();
+//                as = false;
+//            }
+//            counter--;
+//
+//            if (counter == 0){
+//                breakk = true;
+//            }
+
+        }
+    }
 }
