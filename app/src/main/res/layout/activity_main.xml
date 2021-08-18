@@ -37,12 +37,29 @@
     <!--        android:layout_height="1dp"-->
     <!--        android:background="@color/colorAccent" />-->
 
-    <Button
-        android:id="@+id/browserBtn"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:text="Open browser" />
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/sampleBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="start sample" />
+
+
+        <Button
+            android:id="@+id/browserBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Open browser" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -53,15 +70,15 @@
         <Button
             android:id="@+id/resumeBtn"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Resume" />
 
         <Button
             android:id="@+id/start1Btn"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Start" />
 
     </LinearLayout>

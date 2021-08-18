@@ -56,6 +56,11 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.resumeBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressDialog.show();
+                websiteUrlsList.clear();
+                profileUrlsList.clear();
+                nullProfileUrlsList.clear();
+                readHtmlFile();
                 DownloadTask task = new DownloadTask();
                 task.execute("https://www.capterra.com/p/170703/Sightcall/");
             }
@@ -64,9 +69,26 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.start1Btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressDialog.show();
+                websiteUrlsList.clear();
+                profileUrlsList.clear();
+                nullProfileUrlsList.clear();
+                readHtmlFile();
                 storeInteger(0);
                 DownloadTask task = new DownloadTask();
                 task.execute("https://www.capterra.com/p/170703/Sightcall/");
+            }
+        });
+
+        findViewById(R.id.sampleBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                storeInteger(0);
+                progressDialog.show();
+                websiteUrlsList.clear();
+                profileUrlsList.clear();
+                nullProfileUrlsList.clear();
+                readFile1();
             }
         });
 
@@ -76,8 +98,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, BrowserActivity.class));
             }
         });
-
-        readHtmlFile();
 
     }
 
@@ -223,6 +243,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void readFile1() {
+        profileUrlsList.clear();
+        websiteUrlsList.clear();
+
         File fileEvents = new File(getFilePathString() + "/sample.txt");
 
         StringBuilder text = new StringBuilder();
@@ -241,6 +264,10 @@ public class MainActivity extends AppCompatActivity {
             textView.setText(text.toString());
 
             br.close();
+
+            DownloadTask task = new DownloadTask();
+            task.execute("https://www.capterra.com/p/170703/Sightcall/");
+
         } catch (final IOException e) {
             e.printStackTrace();
             Log.d(TAG, "readFile: " + e.getMessage());
@@ -299,7 +326,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-//    private String readFile() {
+    //    private String readFile() {
 //        File fileEvents = new File(getFilePathString() + "/sample.txt");
 //
 //        StringBuilder text = new StringBuilder();
@@ -321,9 +348,9 @@ public class MainActivity extends AppCompatActivity {
 //        String result = text.toString();
 //        return result;
 //    }
+    ArrayList<String> nullProfileUrlsList = new ArrayList<>();
 
     public class DownloadTask extends AsyncTask<String, Void, String> {
-        ArrayList<String> nullProfileUrlsList = new ArrayList<>();
 
         @Override
         protected void onPreExecute() {
@@ -334,7 +361,8 @@ public class MainActivity extends AppCompatActivity {
 //            profileUrlsList.add("https://www.capterra.com/p/180838/SimpleACD/");
 //            profileUrlsList.add("https://www.capterra.com/p/174615/SIMPSY-Voice/");
 
-            progressDialog.show();
+            if (!progressDialog.isShowing())
+                progressDialog.show();
 
 //            readFile1();
         }
@@ -426,8 +454,8 @@ public class MainActivity extends AppCompatActivity {
                 int position = profileUrlsList.indexOf(profileUrl) + 1;
 
                 // THIS CODE IS USED TO RESUME THE LOOP WHERE IT WAS BEFORE CRASH
-                if (storedInt != 0){
-                    if (position <= storedInt){
+                if (storedInt != 0) {
+                    if (position <= storedInt) {
                         continue;
                     }
                 }
