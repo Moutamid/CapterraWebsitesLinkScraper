@@ -312,6 +312,7 @@ public class MainActivity extends AppCompatActivity {
 //    }
 
     public class DownloadTask extends AsyncTask<String, Void, String> {
+        ArrayList<String> nullProfileUrlsList = new ArrayList<>();
 
         @Override
         protected void onPreExecute() {
@@ -415,7 +416,10 @@ public class MainActivity extends AppCompatActivity {
 
                 String webUrl = getWebsiteUrl(htmlData);
 
-                websiteUrlsList.add(webUrl);
+                if (webUrl.equals("null")) {
+                    nullProfileUrlsList.add(profileUrl);
+                } else
+                    websiteUrlsList.add(webUrl);
 
                 int position = profileUrlsList.indexOf(profileUrl) + 1;
 
@@ -433,6 +437,52 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     }
                 }
+
+//                if (breakk) {
+//                    break;
+//                }
+
+            }
+
+            if (nullProfileUrlsList.isEmpty()) {
+                return "null";
+            }
+
+            Toast.makeText(MainActivity.this, "NOW REQUESTING THE NULL LIST", Toast.LENGTH_LONG).show();
+
+            String nullTotalSize = String.valueOf(nullProfileUrlsList.size());
+
+            // SEPARATE LOOP FOR NULL PROFILES
+            // MEANING WHOSE PROFILES GAVE AN ERROR
+            // AND PRINTED NULL THEN THOSE ARE LOOPING AGAIN
+            for (String nullProfileUrl : nullProfileUrlsList) {
+
+                String htmlData = getHtmlString(nullProfileUrl);
+
+                String webUrl = getWebsiteUrl(htmlData);
+
+                if (webUrl.equals("null")) {
+                    websiteUrlsList.add("--NULL: " + nullProfileUrl);
+//                    nullProfileUrlsList.add(nullProfileUrl);
+                } else
+                    websiteUrlsList.add(webUrl);
+
+                int position = nullProfileUrlsList.indexOf(nullProfileUrl) + 1;
+
+                updateProgressBar(String.valueOf(position), nullTotalSize + " (NULL LIST)");
+
+                try {
+                    Thread.sleep(delayInt);//60000
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+//                if (loopCount != 0) {
+//                    i++;
+//                    if (i == loopCount) {
+//                        break;
+//                    }
+//                }
 
 //                if (breakk) {
 //                    break;
