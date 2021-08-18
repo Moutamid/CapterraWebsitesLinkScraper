@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> profileUrlsList = new ArrayList<String>();
     ArrayList<String> websiteUrlsList = new ArrayList<String>();
     EditText loop_execute_count_editText;
+    EditText delay_between_requests_editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         textView = findViewById(R.id.outputTextview);
 
         loop_execute_count_editText = findViewById(R.id.loop_execute_count_editText);
+        delay_between_requests_editText = findViewById(R.id.delay_between_requests_editText);
 
         progressDialog = new ProgressDialog(MainActivity.this);
         progressDialog.setCancelable(false);
@@ -385,6 +387,8 @@ public class MainActivity extends AppCompatActivity {
 
             String totalSize = String.valueOf(profileUrlsList.size());
 
+            // THIS CODE DETERMINES THAT HOW MUCH TIME A LOOP
+            // SHOULD RUN LIKE ONLY 5 TIMES
             int i = 0;
             String lll = loop_execute_count_editText.getText().toString();
             int loopCount;
@@ -393,24 +397,32 @@ public class MainActivity extends AppCompatActivity {
             else
                 loopCount = Integer.parseInt(lll);
 
+            // THIS CODE DETERMINES THAT WHAT SHOULD BE DELAY
+            // BETWEEN EACH NETWORK REQUEST BECAUSE OF CAPPTERRA
+            // RESTRICTIONS
+            String ppp = delay_between_requests_editText.getText().toString();
+            int delayInt;
+            if (ppp.isEmpty())
+                delayInt = 30000;
+            else
+                delayInt = Integer.parseInt(ppp);
+
             for (String profileUrl : profileUrlsList) {
 
 //                if (profileUrlsList.indexOf(profileUrl) + 1)
 
-/*
                 String htmlData = getHtmlString(profileUrl);
 
                 String webUrl = getWebsiteUrl(htmlData);
 
                 websiteUrlsList.add(webUrl);
-*/
 
                 int position = profileUrlsList.indexOf(profileUrl) + 1;
 
                 updateProgressBar(String.valueOf(position), totalSize);
 
                 try {
-                    Thread.sleep(30000);//60000
+                    Thread.sleep(delayInt);//60000
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

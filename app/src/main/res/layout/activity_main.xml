@@ -12,11 +12,30 @@
         android:text="RUN LOOP THIS TIMES. 0 MEAN INFINITE" />
 
     <EditText
+        android:id="@+id/loop_execute_count_editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="number"
-        android:id="@+id/loop_execute_count_editText"
         android:text="0" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DELAY BETWEEN REQUESTS IN MILLI-SECONDS" />
+
+    <EditText
+        android:id="@+id/delay_between_requests_editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:text="30000" />
+
+
+    <!--    <View-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="1dp"-->
+    <!--        android:background="@color/colorAccent" />-->
 
     <Button
         android:id="@+id/browserBtn"
