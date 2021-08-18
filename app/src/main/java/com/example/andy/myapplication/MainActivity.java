@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
 //        return result;
     }
 
-    private void saveTextFile() {
+    private void saveTextFile(boolean FINAL_SAVING) {
 
         File file = new File(getFilePathString());
         if (!file.exists()) {
@@ -158,15 +158,19 @@ public class MainActivity extends AppCompatActivity {
 
             writer.flush();
             writer.close();
-            textView.setText(data);
 
-            Toast.makeText(MainActivity.this, "Saved your text: " + websiteUrlsList.size(), Toast.LENGTH_LONG).show();
+            if (FINAL_SAVING) {
+                textView.setText(data);
+                Toast.makeText(MainActivity.this, "Saved your text: " + websiteUrlsList.size(), Toast.LENGTH_LONG).show();
+            }
+
         } catch (final Exception e) {
             e.printStackTrace();
-            Log.d(TAG, "onClick: " + e.getMessage());
+            Log.d(TAG, "FILE SAVING ERROR: " + e.getMessage());
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    Toast.makeText(context, "FILE SAVING ERROR", Toast.LENGTH_SHORT).show();
                     Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
@@ -345,7 +349,7 @@ public class MainActivity extends AppCompatActivity {
 //            textView.setText(data);
 //            textView.setText(nameStr + "\n" + urlStr);
 
-            saveTextFile();
+            saveTextFile(true);
 
             progressDialog.dismiss();
 
@@ -418,9 +422,10 @@ public class MainActivity extends AppCompatActivity {
 
                 if (webUrl.equals("null")) {
                     nullProfileUrlsList.add(profileUrl);
-                } else
+                } else {
                     websiteUrlsList.add(webUrl);
-
+                    saveTextFile(false);
+                }
                 int position = profileUrlsList.indexOf(profileUrl) + 1;
 
                 updateProgressBar(String.valueOf(position), totalSize);
@@ -448,7 +453,12 @@ public class MainActivity extends AppCompatActivity {
                 return "null";
             }
 
-            Toast.makeText(MainActivity.this, "NOW REQUESTING THE NULL LIST", Toast.LENGTH_LONG).show();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, "NOW REQUESTING THE NULL LIST", Toast.LENGTH_LONG).show();
+                }
+            });
 
             String nullTotalSize = String.valueOf(nullProfileUrlsList.size());
 
@@ -466,6 +476,8 @@ public class MainActivity extends AppCompatActivity {
 //                    nullProfileUrlsList.add(nullProfileUrl);
                 } else
                     websiteUrlsList.add(webUrl);
+
+                saveTextFile(false);
 
                 int position = nullProfileUrlsList.indexOf(nullProfileUrl) + 1;
 
