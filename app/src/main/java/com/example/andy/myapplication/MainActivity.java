@@ -76,7 +76,8 @@ public class MainActivity extends AppCompatActivity {
                 readHtmlFile();
                 storeInteger(0);
                 DownloadTask task = new DownloadTask();
-                task.execute("https://www.capterra.com/p/170703/Sightcall/");
+                task.execute("");
+//                task.execute("https://www.capterra.com/p/170703/Sightcall/");
             }
         });
 
@@ -120,7 +121,12 @@ public class MainActivity extends AppCompatActivity {
 
             br.close();
 
+            // NEW LOGIC
+//            Pattern p = Pattern.compile("<a class=\"nb-button nb-button-standard nb-button-primary \" href=\"(.*?)\"");
+
+            // OLD LOGIC
             Pattern p = Pattern.compile("<a class=\"nb-button nb-button-standard nb-button-primary nb-text-md nb-px-xl nb-leading-lg nb-whitespace-no-wrap\" href=\"(.*?)\"");
+
             Matcher m = p.matcher(text.toString());
 
             String finalResult = "";
